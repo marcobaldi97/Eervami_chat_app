@@ -1,0 +1,28 @@
+.chatMessageContainer {
+	padding: 6px;
+
+	display: grid;
+	width: 100%;
+}
+
+.myMessageType {
+	.contentContainer {
+		max-width: 80%;
+		justify-self: flex-end;
+
+		padding: 8px;
+
+		background-color: #056062a4;
+	}
+}
+
+.myAssociateType {
+	.contentContainer {
+		max-width: 80%;
+		justify-self: flex-start;
+
+		padding: 8px;
+
+		background-color: #262d31a6;
+	}
+}
