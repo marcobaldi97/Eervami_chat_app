@@ -1,6 +1,6 @@
 .chatContainer {
 	width: 100%;
-	height: 400px;
+	height: 100%;
 	border: 1px rgb(195, 195, 195);
 
 	display: flex;
@@ -11,22 +11,68 @@
 }
 
 .chatHeader {
-	width: 100%;
 	height: fit-content;
 
 	padding-left: 10px;
 
 	background-color: rgb(87, 1, 18);
+
+	border-radius: 0px;
+	border: 1px solid rgb(195, 195, 195);
 }
 
 .chatBody {
 	background-color: #0d1418;
 	flex-grow: 1;
+
+	padding: 5px;
+	overflow: scroll;
+
+	border-radius: 0px;
+	border: 1px solid rgb(195, 195, 195);
 }
 
 .chatTextwrite {
-	height: 40px;
+	display: flex;
+	flex-direction: row !important;
+
 	width: 100%;
+	height: 50px;
 
 	background-color: rgb(87, 1, 18);
+
+	.submittableText {
+		flex-grow: 1;
+		padding: 5px;
+		border: none;
+		outline: none;
+		background-color: rgb(87, 1, 18);
+		color: white;
+
+		border-radius: 0px;
+		border: 1px solid rgb(195, 195, 195);
+
+		&:focus {
+			background-color: rgba(179, 46, 73, 0.5);
+		}
+	}
+
+	.submitButton {
+		width: fit-content;
+		height: 100%;
+
+		margin-left: auto;
+		margin-right: 10px;
+
+		background-color: rgb(87, 1, 18);
+		color: white;
+
+		border-radius: 0px;
+		border-color: white;
+
+		&:hover {
+			background-color: rgba(179, 46, 73, 0.5);
+			color: white;
+		}
+	}
 }

@@ -1,16 +1,24 @@
 import React from "react";
-import logo from "./logo.svg";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import SSRProvider from "react-bootstrap/SSRProvider";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import "./App.css";
-import { Chat } from "./components/Chat/Chat";
+import { Home } from "./pages/Home/Home";
 
 function App() {
 	return (
 		<SSRProvider>
 			<div className="App">
-				<Chat myUser="Albert" associate={{ name: "Barbara", onlineStatus: true }} />
+				<Router>
+					<Switch>
+						<Route path="/">
+							<Home />
+						</Route>
+					</Switch>
+				</Router>
 			</div>
 		</SSRProvider>
 	);

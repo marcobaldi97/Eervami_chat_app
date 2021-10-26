@@ -1,4 +1,14 @@
+:root {
+	--mainColor: rgb(87, 1, 18);
+	--secondaryColor: rgba(179, 46, 73, 0.5);
+	--borderColor: rgba(255, 255, 255, 1);
+}
+
 .App {
+	width: 100vw;
+	height: 100vh;
+
+	background-color: black;
 }
 
 .App-link {
