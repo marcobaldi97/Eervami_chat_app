@@ -5,8 +5,7 @@ const port = app.get("port");
 const server = app.listen(port, onListening);
 server.on("error", onError);
 
-console.log("Hi mark!");
-
+console.log("Hello world!");
 
 function onError(error: NodeJS.ErrnoException) {
     if (error.syscall !== "listen") {
