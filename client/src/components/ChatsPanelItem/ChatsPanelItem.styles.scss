@@ -1,0 +1,58 @@
+.chatsPanelItemContainer {
+	--onlineColor: #00b300;
+	--disconnectedColor: #ff0000;
+
+	display: flex;
+	flex-direction: column;
+
+	height: fit-content;
+	width: 100%;
+
+	margin: 0%;
+
+	color: white;
+
+	border-top: 1px solid var(--secondaryColor);
+	border-bottom: 1px solid var(--secondaryColor);
+
+	&:hover {
+		background-color: var(--secondaryColor);
+	}
+
+	.metaInfo {
+		display: grid;
+		grid-template-columns: 4fr 2fr;
+
+		.online {
+			display: grid;
+			grid-template-columns: 2fr 3fr;
+			align-items: center;
+
+			font-style: italic;
+			color: var(--onlineColor);
+
+			.onlineCircle {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: var(--onlineColor);
+			}
+		}
+
+		.disconnected {
+			display: grid;
+			grid-template-columns: 2fr 3fr;
+			align-items: center;
+
+			font-style: italic;
+			color: var(--disconnectedColor);
+
+			.disconnectedCircle {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: var(--disconnectedColor);
+			}
+		}
+	}
+}

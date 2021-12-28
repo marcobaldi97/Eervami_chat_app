@@ -1,9 +1,0 @@
-{
-	allChats: [
-		{
-			participant1: "Albert",
-			participant2: "Barbara",
-			messages: [],
-		},
-	],
-}

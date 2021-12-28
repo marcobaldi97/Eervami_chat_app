@@ -1,16 +1,44 @@
 :root {
-	--mainColor: rgb(87, 1, 18);
-	--secondaryColor: rgba(179, 46, 73, 0.5);
-	--borderColor: rgba(255, 255, 255, 1);
+	--borderColor: rgba(255, 255, 255, 0.164);
+	--appBackgroundColor: #131c21;
+	--mainColor: var(--appBackgroundColor);
+	--secondaryColor: var(--borderColor);
+	--fontColor: #858789;
+	--fontColorChat: #c2c5c7;
 }
 
 .App {
 	width: 100vw;
 	height: 100vh;
 
-	background-color: black;
+	background-color: var(--appBackgroundColor);
 }
 
 .App-link {
 	color: #61dafb;
+}
+
+body,
+html {
+	height: 100%;
+	width: 100%;
+
+	padding: 0%;
+}
+
+textarea,
+input {
+	outline: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	font-family: "Roboto", sans-serif;
+	font-weight: 300;
+	color: var(--fontColorChat);
 }
