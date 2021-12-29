@@ -8,6 +8,7 @@ import { Container } from "react-bootstrap";
 import { ChatsPanelItem } from "../ChatsPanelItem/ChatsPanelItem";
 import { FriendStatus } from "../../pages/Home/Home";
 import { ApiStore } from "../../core/ApiStore";
+import { UserTitle } from "../UserTitle/UserTitle";
 
 interface ChatsPanelProps {
 	myUser: string;
@@ -49,6 +50,9 @@ export function ChatsPanel(props: ChatsPanelProps) {
 
 	return (
 		<Container fluid className="chatsPanelContainer">
+			<div className="userTitleContainer">
+				<UserTitle username={props.myUser} image="" />
+			</div>
 			<ul>{chatPanelItems}</ul>
 		</Container>
 	);

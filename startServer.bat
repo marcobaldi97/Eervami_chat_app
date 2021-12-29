@@ -1,0 +1,1 @@
+start powershell.exe /c cd ./api; npm run watch
