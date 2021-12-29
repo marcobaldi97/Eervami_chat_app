@@ -7,7 +7,7 @@ import { ApiStore } from "../../core/ApiStore";
 import { Chat } from "../../components/Chat/Chat";
 import { ChatsPanel } from "../../components/ChatsPanel/ChatsPanel";
 
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 
 interface HomeProps {
 	loggedUser: string;
@@ -23,13 +23,21 @@ export function Home(props: HomeProps) {
 
 	const [friends, setFriends] = React.useState<FriendStatus[]>([]);
 	const [selectedFriend, setSelectedFriend] = React.useState<FriendStatus | undefined>(undefined);
+	const [loading, setLoading] = React.useState<boolean>(true);
 
 	React.useEffect(() => {
-		try {
-			appStore.getFriends(props.loggedUser).then((res: FriendStatus[]) => setFriends(res));
-		} catch (error) {
-			console.error(error);
-		}
+		const getFriends = async () => {
+			try {
+				const response = await appStore.getFriends(props.loggedUser);
+
+				setFriends(response);
+				setLoading(false);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		getFriends();
 	}, []);
 
 	function handleClick(clickedFriend: FriendStatus) {
@@ -38,7 +46,7 @@ export function Home(props: HomeProps) {
 
 	return (
 		<Container fluid className="homeContainer">
-			<ChatsPanel myUser={"Alphonse"} associates={friends} onClick={handleClick} />
+			{!loading ? <ChatsPanel myUser={"Alphonse"} associates={friends} onClick={handleClick} /> : <Spinner animation="border" variant="light" />}
 			<div>{selectedFriend && <Chat myUser="Albert" associate={selectedFriend} />}</div>
 		</Container>
 	);

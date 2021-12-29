@@ -15,7 +15,6 @@ export class ApiStore {
     //a GET request to the server to get every friend of a given username 
     public async getFriends(username: string): Promise<any> {
         try {
-            alert(`/friends/getFriendsList?user=${username}`);
             const response = await this.axios.get(`/friends/getFriendsList?user=${username}`);
 
             return response.data;

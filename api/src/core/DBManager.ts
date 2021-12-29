@@ -35,7 +35,6 @@ export class DBManager {
     public async executeSelectConsult(select_consult: string, values: any): Promise<any> {
         try {
             const queryResponse = await this.pool.query(select_consult, values);
-            console.log(values, queryResponse);
 
             return queryResponse.rows;
         } catch (error) {
