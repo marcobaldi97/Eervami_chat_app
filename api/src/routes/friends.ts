@@ -8,15 +8,28 @@ const db = DBManager.getInstance();
 friends.get("/getFriendsList?", async (req, res, next) => {
     const user = req.query.user;
     try {
-        const query = "SELECT * FROM friends WHERE user1=$1 OR user2=$1";
-        const queryResult = await db.executeSelectConsult(query, [user]);
+        let query = "SELECT * FROM friends WHERE user1=$1 OR user2=$1";
+        const friendsQueryResult = await db.executeSelectConsult(query, [user]);
 
-        const friendList = queryResult.map((result: { user1: string, user2: string }) => {
-            return {
-                name: result.user1 === user ? result.user2 : result.user1,
+        const friendList = [];
+
+        //query that search the last message of each friends   
+        query = "SELECT * FROM messages WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1) ORDER BY msg_id DESC LIMIT 1"
+        for (let i = 0; i < friendsQueryResult.length; i++) {
+            const friend = friendsQueryResult[i];
+            const friendName = user === friend.user2 ? friend.user1 : friend.user2;
+
+            const queryResult = await db.executeSelectConsult(query, [user, friendName]);
+
+            friendList.push({
+                name: friendName,
                 onlineStatus: true,
-            }; //todo: change this when sockets.io is implemented
-        });
+                lastMessage: queryResult && queryResult.length > 0 ? queryResult[0].msg : "",
+            });
+        }
+
+        console.log(friendList);
+
 
         res.send(friendList);
     } catch (error) {

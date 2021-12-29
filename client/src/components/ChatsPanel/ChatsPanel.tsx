@@ -30,19 +30,9 @@ export function ChatsPanel(props: ChatsPanelProps) {
 		}
 	}, []);
 
-	async function printChats(myUser: string, associates: { name: string; onlineStatus: boolean }[]) {
+	async function printChats(myUser: string, associates: FriendStatus[]) {
 		const itemsToRender = associates.map((associate, index) => {
-			const participant1 = myUser;
-			const participant2 = associate.name;
-
-			let lastMessage = "";
-
-			apiStore
-				.getLastMessage(participant1, participant2)
-				.then((res) => (lastMessage = res))
-				.catch((error) => (lastMessage = "No message found"));
-
-			return <ChatsPanelItem key={`ChatsPanelItem_${index}`} name={associate.name} onlineStatus={associate.onlineStatus} lastMessage={lastMessage} />;
+			return <ChatsPanelItem key={`ChatsPanelItem_${index}`} name={associate.name} onlineStatus={associate.onlineStatus} lastMessage={associate.lastMessage} />;
 		});
 
 		setChatPanelItems(itemsToRender);

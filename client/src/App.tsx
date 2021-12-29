@@ -7,8 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
 import { Home } from "./pages/Home/Home";
+import { DataStore } from "./core/DataStore";
 
 function App() {
+	DataStore.getInstance().setloggedUser("Alphonse");
+
 	return (
 		<SSRProvider>
 			<div className="App">

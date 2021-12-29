@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import { FriendStatus } from "../pages/Home/Home";
 
 export class ApiStore {
     axios: AxiosInstance;
@@ -16,20 +17,7 @@ export class ApiStore {
     public async getFriends(username: string): Promise<any> {
         try {
             const response = await this.axios.get(`/friends/getFriendsList?user=${username}`);
-
-            return response.data;
-        } catch (error) {
-            console.log(error);
-
-            return null;
-        }
-    }
-
-    //a GET request that given a username and a friend username, will return the last message between the two users
-    public async getLastMessage(username: string, friendUsername: string): Promise<any> {
-        try {
-            const response = await this.axios.get(`/messages/lastMessage?user1=${username}&user2=${friendUsername}`);
-
+            console.log("Response data: ", response.data);
             return response.data;
         } catch (error) {
             console.log(error);

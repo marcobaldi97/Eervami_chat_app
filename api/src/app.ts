@@ -8,6 +8,7 @@ import { errorHandler, errorNotFoundHandler } from "./middlewares/errorHandler";
 // Routes
 import { index } from "./routes/index";
 import { friends } from "./routes/friends";
+import { messages } from "./routes/messages";
 // Create Express server
 export const app = express();
 
@@ -22,6 +23,7 @@ app.use(logger("dev"));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api", index);
 app.use("/api/friends", friends);
+app.use("/api/messages", messages);
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);

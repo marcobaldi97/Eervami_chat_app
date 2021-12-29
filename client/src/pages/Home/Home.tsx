@@ -16,6 +16,7 @@ interface HomeProps {
 export interface FriendStatus {
 	name: string;
 	onlineStatus: boolean;
+	lastMessage: string;
 }
 
 export function Home(props: HomeProps) {
@@ -30,6 +31,7 @@ export function Home(props: HomeProps) {
 			try {
 				const response = await appStore.getFriends(props.loggedUser);
 
+				console.log(response);
 				setFriends(response);
 				setLoading(false);
 			} catch (error) {
