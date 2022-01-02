@@ -1,5 +1,15 @@
+import { action, makeAutoObservable, observable } from "mobx";
+
+
 export class DataStore {
     static instance: DataStore;
+
+    private constructor() {
+        this.loggedUser = "";
+        this.selectedFriend = undefined;
+
+        makeAutoObservable(this);
+    }
 
     public static getInstance(): DataStore {
         !DataStore.instance && (DataStore.instance = new DataStore());
@@ -7,11 +17,19 @@ export class DataStore {
         return DataStore.instance;
     }
 
-    //data
-    private loggedUser = ""
-    //data
+    //#region data
+    @observable loggedUser: string = "";
 
-    public setloggedUser(user: string) { this.loggedUser = user };
-
+    @observable selectedFriend: string | undefined = undefined;
+    //#endregion data
+    //#region getters
     public getloggedUser() { return this.loggedUser };
+    //#endregion getters
+    //#region setters
+    @action
+    setloggedUser(user: string) { this.loggedUser = user };
+
+    @action
+    setSelectedFriend(friend: string) { this.selectedFriend = friend; console.log(this.selectedFriend) };
+    //#endregion getters
 }

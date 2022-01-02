@@ -1,9 +1,10 @@
 .chatContainer {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: min-content auto min-content;
 	justify-items: stretch;
 
 	color: var(--fontColor);
@@ -16,7 +17,7 @@
 	flex-grow: 1;
 
 	padding: 5px;
-	overflow: scroll;
+	overflow-y: scroll;
 
 	border-radius: 0px;
 }

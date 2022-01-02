@@ -1,5 +1,7 @@
 import React from "react";
 
+import { observer } from "mobx-react";
+
 import "./Home.styles.scss";
 
 import { ApiStore } from "../../core/ApiStore";
@@ -8,10 +10,9 @@ import { Chat } from "../../components/Chat/Chat";
 import { ChatsPanel } from "../../components/ChatsPanel/ChatsPanel";
 
 import { Container, Spinner } from "react-bootstrap";
+import { DataStore } from "../../core/DataStore";
 
-interface HomeProps {
-	loggedUser: string;
-}
+export interface HomeProps {}
 
 export interface FriendStatus {
 	name: string;
@@ -19,17 +20,17 @@ export interface FriendStatus {
 	lastMessage: string;
 }
 
-export function Home(props: HomeProps) {
+export const Home: React.FunctionComponent<HomeProps> = observer((props: HomeProps) => {
 	const appStore = new ApiStore();
+	const dataStore = DataStore.getInstance();
 
 	const [friends, setFriends] = React.useState<FriendStatus[]>([]);
-	const [selectedFriend, setSelectedFriend] = React.useState<FriendStatus | undefined>(undefined);
 	const [loading, setLoading] = React.useState<boolean>(true);
 
 	React.useEffect(() => {
 		const getFriends = async () => {
 			try {
-				const response = await appStore.getFriends(props.loggedUser);
+				const response = await appStore.getFriends(dataStore.loggedUser);
 
 				console.log(response);
 				setFriends(response);
@@ -42,14 +43,10 @@ export function Home(props: HomeProps) {
 		getFriends();
 	}, []);
 
-	function handleClick(clickedFriend: FriendStatus) {
-		setSelectedFriend(clickedFriend);
-	}
-
 	return (
 		<Container fluid className="homeContainer">
-			{!loading ? <ChatsPanel myUser={"Alphonse"} associates={friends} onClick={handleClick} /> : <Spinner animation="border" variant="light" />}
-			<div>{selectedFriend && <Chat myUser="Albert" associate={selectedFriend} />}</div>
+			{!loading ? <ChatsPanel myUser={"Alphonse"} associates={friends} /> : <Spinner animation="border" variant="light" />}
+			<div>{dataStore.selectedFriend && <Chat myUser={dataStore.loggedUser} associateName={dataStore.selectedFriend} />}</div>
 		</Container>
 	);
-}
+});
