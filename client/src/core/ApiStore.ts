@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import { DataStore } from "./DataStore";
 
 export interface Message {
     user1: string;
@@ -21,7 +22,9 @@ export class ApiStore {
     }
 
     //a GET request to the server to get every friend of a given username 
-    public async getFriends(username: string): Promise<any> {
+    public async getFriends(username: string | undefined): Promise<any> {
+        if (!username) return;
+
         try {
             const response = await this.axios.get(`/friends/getFriendsList?user=${username}`);
 
@@ -52,6 +55,25 @@ export class ApiStore {
             const response = await this.axios.post(`/messages/sendMessage?user1=${user1}&user2=${user2}&msg=${msg}`);
             console.log("Response data: ", response.data);
             return response.data;
+        } catch (error) {
+            console.log(error);
+
+            return false;
+        }
+    }
+
+    //an Axios Post Request that given a username and password, it sends the login request to the server
+    public async login(username: string, password: string): Promise<boolean> {
+        try {
+            const response = await this.axios.post(`/users/login`, { username: username, password: password });
+
+            if (response.data.success) {
+                DataStore.getInstance().setloggedUser(username);
+
+                return true;
+            } else {
+                return false;
+            }
         } catch (error) {
             console.log(error);
 

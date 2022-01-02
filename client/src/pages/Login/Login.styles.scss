@@ -1,0 +1,96 @@
+.loginContainer {
+	--transitionTime: 0.5s;
+	--fontColor: white;
+	--submitHoverColor: rgba(15, 83, 15, 0.527);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	height: 100vh;
+	width: 100vw;
+
+	background: url("../../core/assets/images/loginBackground.png") no-repeat center center fixed !important;
+
+	h1 {
+		font-size: 4rem;
+		font-weight: bold;
+		color: var(--fontColor);
+		margin-bottom: 1rem;
+	}
+
+	button {
+		display: none;
+	}
+}
+
+.loginForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+
+	width: 100%;
+	max-width: 400px;
+
+	padding: 20px;
+
+	border: 1px solid var(--borderColor);
+
+	color: white;
+
+	background: rgba(0, 0, 0, 0.246);
+
+	div {
+		display: grid;
+		grid-template-columns: 100px 200px;
+		grid-gap: 10px;
+
+		margin-bottom: 10px;
+	}
+
+	input {
+		border: none;
+		border-bottom: 1px solid var(--borderColor);
+		background: transparent;
+		color: var(--fontColor);
+		font-weight: bold;
+		width: 100%;
+	}
+}
+
+.submitButton {
+	width: 100%;
+	max-width: 400px;
+
+	padding: 10px;
+
+	border: 1px solid var(--borderColor);
+
+	background: var(--primaryColor);
+
+	color: white;
+
+	font-weight: bold;
+	font-size: 1.5rem;
+
+	cursor: pointer;
+
+	transition: var(--transitionTime);
+
+	&:hover {
+		background: var(--submitHoverColor);
+
+		transition: var(--transitionTime);
+	}
+}
+
+.errorMessage {
+	width: 100%;
+	min-width: 200px;
+
+	color: rgb(180, 18, 18);
+	font-size: 1.1rem;
+}

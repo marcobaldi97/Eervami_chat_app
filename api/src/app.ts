@@ -9,6 +9,7 @@ import { errorHandler, errorNotFoundHandler } from "./middlewares/errorHandler";
 import { index } from "./routes/index";
 import { friends } from "./routes/friends";
 import { messages } from "./routes/messages";
+import { users } from "./routes/users";
 // Create Express server
 export const app = express();
 
@@ -19,11 +20,13 @@ app.set("view engine", "pug");
 
 app.use(cors());
 app.use(logger("dev"));
+app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api", index);
 app.use("/api/friends", friends);
 app.use("/api/messages", messages);
+app.use("/api/users", users);
 
 app.use(errorNotFoundHandler);
 app.use(errorHandler);

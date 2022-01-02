@@ -43,6 +43,10 @@ p {
 	color: var(--fontColorChat);
 }
 
+label {
+	font-family: "Roboto", sans-serif;
+}
+
 ul {
 	list-style: none;
 	padding: 0;

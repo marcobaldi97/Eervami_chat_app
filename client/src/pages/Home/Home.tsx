@@ -46,7 +46,7 @@ export const Home: React.FunctionComponent<HomeProps> = observer((props: HomePro
 	return (
 		<Container fluid className="homeContainer">
 			{!loading ? <ChatsPanel myUser={"Alphonse"} associates={friends} /> : <Spinner animation="border" variant="light" />}
-			<div>{dataStore.selectedFriend && <Chat myUser={dataStore.loggedUser} associateName={dataStore.selectedFriend} />}</div>
+			<div>{dataStore.selectedFriend && <Chat myUser={dataStore.loggedUser ?? ""} associateName={dataStore.selectedFriend} />}</div>
 		</Container>
 	);
 });

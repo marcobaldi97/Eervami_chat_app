@@ -18,12 +18,12 @@ export class DataStore {
     }
 
     //#region data
-    @observable loggedUser: string = "";
+    @observable loggedUser: string | undefined = undefined;
 
     @observable selectedFriend: string | undefined = undefined;
     //#endregion data
     //#region getters
-    public getloggedUser() { return this.loggedUser };
+    public getloggedUser(): string { return (this.loggedUser ? this.loggedUser : "") };
     //#endregion getters
     //#region setters
     @action
