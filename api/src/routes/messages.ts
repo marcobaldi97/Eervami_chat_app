@@ -51,4 +51,4 @@ messages.post("/sendMessage?", async (req, res, next) => {
 
         res.send(error);
     }
-        );
+});
