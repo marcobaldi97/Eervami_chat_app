@@ -28,12 +28,10 @@ export const Login = (props: LoginProps) => {
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
-		await apiStore.login(username, password).then((res) => {
-			if (res) {
-				dataStore.setloggedUser(username);
-				setRedirect(true);
-			} else setError("Invalid username or password");
-		});
+		const response = await apiStore.login(username, password);
+
+		if (response) setRedirect(true);
+		else setError("Invalid username or password");
 	}
 
 	return (

@@ -13,13 +13,11 @@ import { observer } from "mobx-react-lite";
 
 export const App = observer(() => {
 	const dataStore = DataStore.getInstance();
-
-	console.log(dataStore.loggedUser);
-
 	return (
 		<SSRProvider>
 			<div className="App">
 				<Router>
+					{!dataStore.loggedUser && <Redirect to="/login" />}
 					<Switch>
 						<Route path="/login">
 							<Login />

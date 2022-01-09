@@ -30,10 +30,10 @@ export const Home: React.FunctionComponent<HomeProps> = observer((props: HomePro
 	React.useEffect(() => {
 		const getFriends = async () => {
 			try {
-				const response = await appStore.getFriends(dataStore.loggedUser);
+				const response = Array.from(await appStore.getFriends(dataStore.loggedUser)) as FriendStatus[];
 
 				console.log(response);
-				setFriends(response);
+				setFriends(response ?? []);
 				setLoading(false);
 			} catch (error) {
 				console.error(error);

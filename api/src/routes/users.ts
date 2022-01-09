@@ -1,3 +1,4 @@
+import { pseudoRandomBytes, randomInt } from "crypto";
 import { Router } from "express";
 import { DataStore } from "../core/DataStore";
 import { DBManager } from "../core/DBManager";
@@ -15,12 +16,12 @@ users.post("/login", async (req, res, next) => {
         const result = await db.executeSelectConsult(query, [username, password]);
 
         if (result.length > 0) {
-            dataStore.login(username, req.ip);
-
-            console.log(username, req.ip);
+            const token = pseudoRandomBytes(32).toString("hex");
+            dataStore.login(username, token);
 
             res.send({
                 success: true,
+                token: token,
             });
         } else {
             res.send({
@@ -29,8 +30,7 @@ users.post("/login", async (req, res, next) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            error: "Internal server error",
-        }).send();
+
+        res.status(500).send(error);
     }
 });
