@@ -1,15 +1,13 @@
 .chatContainer {
-	width: 100%;
-	height: 100vh;
-
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: min-content auto min-content;
 	justify-items: stretch;
 
-	color: var(--fontColor);
+	width: 100%;
+	height: 100vh;
 
-	border-left: 2px solid var(--secondaryColor);
+	color: var(--fontColor);
 }
 
 .chatBody {
@@ -33,18 +31,23 @@
 
 	.submittableText {
 		flex-grow: 1;
-		padding: 5px;
+		padding: 12px;
 
 		background-color: var(--appBackgroundColor);
 		color: var(--fontColor);
 
 		border-radius: 0px;
 		border-color: var(--secondaryColor);
+
+		&:focus {
+			font-size: 18px;
+			color: var(--fontColorChat);
+		}
 	}
 
 	.submitButton {
 		display: grid;
-		text-align: center;
+		place-content: center;
 
 		min-width: 100px;
 		width: fit-content;

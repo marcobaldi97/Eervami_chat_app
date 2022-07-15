@@ -2,18 +2,18 @@
 	--onlineColor: #00b300;
 	--disconnectedColor: #ff0000;
 
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	place-content: inherit;
 
 	height: fit-content;
 	width: 100%;
-
-	margin: 0%;
 
 	color: white;
 
 	border-top: 1px solid var(--secondaryColor);
 	border-bottom: 1px solid var(--secondaryColor);
+
+	padding: 10px;
 
 	&:hover {
 		background-color: var(--secondaryColor);
@@ -55,4 +55,9 @@
 			}
 		}
 	}
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0px;
 }

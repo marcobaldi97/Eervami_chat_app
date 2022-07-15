@@ -3,6 +3,8 @@
 	grid-template-columns: 1fr 2fr;
 	grid-template-rows: 1fr;
 
+	place-content: initial;
+
 	width: 100%;
 
 	.userImageContainer {
@@ -18,7 +20,7 @@
 	.usernameContainer {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 
 		width: 100%;
 

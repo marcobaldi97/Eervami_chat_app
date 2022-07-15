@@ -32,7 +32,17 @@ export function ChatsPanel(props: ChatsPanelProps) {
 		const itemsToRender =
 			associates &&
 			associates.map((associate, index) => {
-				return <ChatsPanelItem key={`ChatsPanelItem_${index}`} name={associate.name} onlineStatus={associate.onlineStatus} lastMessage={associate.lastMessage} onClick={() => dataStore.setSelectedFriend(associate.name)} />;
+				return (
+					<ChatsPanelItem
+						key={`ChatsPanelItem_${index}`}
+						name={associate.name}
+						onlineStatus={associate.onlineStatus}
+						lastMessage={associate.lastMessage}
+						onClick={() =>
+							dataStore.setSelectedFriend(associate.name)
+						}
+					/>
+				);
 			});
 
 		setChatPanelItems(itemsToRender);
@@ -40,9 +50,8 @@ export function ChatsPanel(props: ChatsPanelProps) {
 
 	return (
 		<Container fluid className="chatsPanelContainer">
-			<div className="userTitleContainer">
-				<UserTitle username={props.myUser} image="" />
-			</div>
+			<UserTitle username={props.myUser} image="" />
+
 			<ul>{chatPanelItems}</ul>
 		</Container>
 	);

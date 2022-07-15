@@ -19,12 +19,22 @@ export function Chat(props: { myUser: string; associateName: string }) {
 	let bottomChat: any = undefined;
 
 	async function asyncFetch() {
-		const rawMessages: Message[] = await apiStore.getMessages(myUser, associateName);
+		const rawMessages: Message[] = await apiStore.getMessages(
+			myUser,
+			associateName
+		);
 
 		const processedMessages = rawMessages.map((message: any) => {
 			const { user1, msg, msg_id, date_time } = message;
 
-			return <ChatMessage key={msg_id} myMessage={user1 === myUser} content={msg} timeStamp={date_time ?? new Date().toDateString} />;
+			return (
+				<ChatMessage
+					key={msg_id}
+					myMessage={user1 === myUser}
+					content={msg}
+					timeStamp={date_time ?? new Date().toDateString}
+				/>
+			);
 		});
 
 		setMessages(processedMessages);
@@ -56,9 +66,8 @@ export function Chat(props: { myUser: string; associateName: string }) {
 
 	return (
 		<div className="chatContainer">
-			<div className="chatHeader">
-				<UserTitle username={associateName} image="" />
-			</div>
+			<UserTitle username={associateName} image="" />
+
 			<div className="chatBody">
 				{messages}
 				<div ref={(bottom) => (bottomChat = bottom)}></div>
@@ -74,8 +83,12 @@ export function Chat(props: { myUser: string; associateName: string }) {
 						event.key === "Enter" && handleSend(event);
 					}}
 				/>
-				<Button className="submitButton" variant="primary" type="submit" onClick={handleSend}>
-					✉
+				<Button
+					className="submitButton"
+					variant="primary"
+					type="submit"
+					onClick={handleSend}>
+					<>✉</>
 				</Button>
 			</div>
 		</div>
