@@ -1,8 +1,5 @@
 import { Router } from "express";
-import { DataStore } from "../core/DataStore";
 import { DBManager } from "../core/DBManager";
-
-const dataStore = DataStore.getInstance();
 
 export const friends = Router();
 
@@ -11,16 +8,16 @@ const db = DBManager.getInstance();
 friends.get("/getFriendsList?", async (req, res, next) => {
     const { user, token } = req.query;
     try {
-        if (!dataStore.validToken(user.toString(), token.toString())) throw new Error("Invalid token");
-        else dataStore.refresh(user.toString());
-
         let query = "SELECT * FROM friends WHERE user1=$1 OR user2=$1";
         const friendsQueryResult = await db.executeSelectConsult(query, [user]);
 
         const friendList = [];
 
         //query that search the last message of each friends   
-        query = "SELECT * FROM messages WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1) ORDER BY msg_id DESC LIMIT 1"
+        query =
+            "SELECT * FROM messages " +
+            "WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1) " +
+            "ORDER BY msg_id DESC LIMIT 1";
 
         for (let i = 0; i < friendsQueryResult.length; i++) {
             const friend = friendsQueryResult[i];
@@ -31,7 +28,10 @@ friends.get("/getFriendsList?", async (req, res, next) => {
             friendList.push({
                 name: friendName,
                 onlineStatus: true,
-                lastMessage: queryResult && queryResult.length > 0 && Object.keys(queryResult).includes("msg") ? queryResult[0].msg : "",
+                lastMessage:
+                    queryResult
+                        && queryResult.length > 0
+                        && Object.keys(queryResult).includes("msg") ? queryResult[0].msg : "",
             });
         }
 
@@ -41,5 +41,4 @@ friends.get("/getFriendsList?", async (req, res, next) => {
 
         res.status(500).send(error);
     }
-
 });

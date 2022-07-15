@@ -26,3 +26,16 @@
 		background-color: #262d31a6;
 	}
 }
+
+.contentContainer {
+	display: grid;
+	grid-template-columns: 1fr;
+	place-items: baseline;
+	gap: 20px;
+
+	.timeStamp {
+		justify-self: end;
+		align-self: flex-end;
+		font-size: 11px;
+	}
+}

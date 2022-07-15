@@ -43,6 +43,9 @@
 	}
 
 	.submitButton {
+		display: grid;
+		text-align: center;
+
 		min-width: 100px;
 		width: fit-content;
 		height: 100%;
