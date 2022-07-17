@@ -1,35 +1,69 @@
 /* eslint-disable max-len */
 import { Router } from "express";
 import { GetMessagesParams, LastMessageParams, SendMessageParams } from "../APITypes";
-import { DBManager } from "../core/DBManager";
+import { messages as message, PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const messages = Router();
 
-const db = DBManager.getInstance();
+async function getLastMessage(params: LastMessageParams): Promise<message | undefined> {
+    const { user1, user2 } = params;
 
-async function getLastMessage(params: LastMessageParams) {
-    const { user1, user2, token } = params;
+    const lastMessage = await prisma.messages.findMany({
+        where: {
+            OR: [
+                {
+                    user1: user1,
+                    user2: user2,
+                },
+                {
+                    user1: user2,
+                    user2: user1,
+                },
+            ],
+        },
+        orderBy: {
+            msg_id: 'desc',
+        },
+        take: 1,
+    });
 
-    const query = "SELECT * FROM messages WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1) ORDER BY msg_id DESC LIMIT 1";
-    const queryResult = await db.executeSelectConsult(query, [user1, user2]);
-
-    return queryResult;
+    return lastMessage?.[0];
 }
 
-async function getMessages(params: GetMessagesParams) {
-    const { user1, user2, token } = params;
+async function getMessages(params: GetMessagesParams): Promise<message[]> {
+    const { user1, user2 } = params;
 
-    const query = "SELECT * FROM messages WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1)";
-    const queryResult = await db.executeSelectConsult(query, [user1, user2]);
-    return queryResult;
+    const messages = await prisma.messages.findMany({
+        where: {
+            OR: [
+                {
+                    user1: user1,
+                    user2: user2,
+                },
+                {
+                    user1: user2,
+                    user2: user1,
+                },
+            ],
+        },
+    });
+
+    return messages;
 }
 
-async function sendMessage(params: SendMessageParams) {
-    const { user1, user2, msg, token } = params;
+async function sendMessage(params: SendMessageParams): Promise<message> {
+    const { user1, user2, msg } = params;
 
-    const query = "INSERT INTO messages (user1, user2, msg, date_time) VALUES ($1, $2, $3, $4)";
-    const queryResult = await db.executeInsertConsult(query, [user1, user2, msg, new Date().toUTCString()]);
-    return queryResult;
+    return await prisma.messages.create({
+        data: {
+            user1,
+            user2,
+            msg,
+            date_time: new Date(),
+        },
+    });
 }
 
 // #region REST
@@ -37,11 +71,7 @@ messages.get("/lastMessage?", async (req, res, next) => {
     const { user1, user2, token } = req.query as LastMessageParams;
 
     try {
-        const queryResult = await getLastMessage({ user1, user2, token });
-
-        console.log(queryResult, queryResult?.[0].msg);
-
-        res.send(queryResult?.[0].msg ?? "");
+        res.send(await getLastMessage({ user1, user2, token }));
     } catch (error) {
         console.log(error);
 
@@ -52,9 +82,7 @@ messages.get("/lastMessage?", async (req, res, next) => {
 messages.get("/getMessages?", async (req, res, next) => {
     const { user1, user2, token } = req.query as GetMessagesParams;
     try {
-        const queryResult = await getMessages({ user1, user2, token });
-
-        res.send(queryResult);
+        res.send(await getMessages({ user1, user2, token }));
     } catch (error) {
         console.log(error);
 
@@ -65,9 +93,7 @@ messages.get("/getMessages?", async (req, res, next) => {
 messages.post("/sendMessage?", async (req, res, next) => {
     const { user1, user2, msg, token } = req.query as SendMessageParams;
     try {
-        const queryResult = await sendMessage({ user1, user2, msg, token });
-
-        res.send(queryResult);
+        res.send(await sendMessage({ user1, user2, msg, token }));
     } catch (error) {
         console.log(error);
 

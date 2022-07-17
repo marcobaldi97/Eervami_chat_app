@@ -1,41 +1,33 @@
 import { Router } from "express";
-import { DBManager } from "../core/DBManager";
+import { PrismaClient, friends as friend } from "@prisma/client";
 
-export const friends = Router();
+import { GetFriendsListParams } from "../APITypes";
 
-const db = DBManager.getInstance();
+const prisma = new PrismaClient();
 
-friends.get("/getFriendsList?", async (req, res, next) => {
-    const { user, token } = req.query;
+export const friendsRouter = Router();
+
+async function getFriendsList(params: GetFriendsListParams): Promise<friend[]> {
+    const { user } = params;
+
+    return await prisma.friends.findMany({
+        where: {
+            OR: [
+                {
+                    user1: user,
+                },
+                {
+                    user2: user,
+                },
+            ],
+        },
+    });
+}
+
+friendsRouter.get("/getFriendsList?", async (req, res, next) => {
+    const { user, token } = req.query as GetFriendsListParams;
     try {
-        let query = "SELECT * FROM friends WHERE user1=$1 OR user2=$1";
-        const friendsQueryResult = await db.executeSelectConsult(query, [user]);
-
-        const friendList = [];
-
-        //query that search the last message of each friends   
-        query =
-            "SELECT * FROM messages " +
-            "WHERE (user1 = $1 AND user2 = $2) OR (user1 = $2 AND user2 = $1) " +
-            "ORDER BY msg_id DESC LIMIT 1";
-
-        for (let i = 0; i < friendsQueryResult.length; i++) {
-            const friend = friendsQueryResult[i];
-            const friendName = user === friend.user2 ? friend.user1 : friend.user2;
-
-            const queryResult = await db.executeSelectConsult(query, [user, friendName]);
-
-            friendList.push({
-                name: friendName,
-                onlineStatus: true,
-                lastMessage:
-                    queryResult
-                        && queryResult.length > 0
-                        && Object.keys(queryResult).includes("msg") ? queryResult[0].msg : "",
-            });
-        }
-
-        res.send(friendList);
+        res.send(await getFriendsList({ user, token }));
     } catch (error) {
         console.log(error);
 

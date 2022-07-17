@@ -6,53 +6,33 @@ import { DataStore } from "../../core/DataStore";
 
 import { Container } from "react-bootstrap";
 import { ChatsPanelItem } from "../ChatsPanelItem/ChatsPanelItem";
-import { FriendStatus } from "../../pages/Home/Home";
 import { UserTitle } from "../UserTitle/UserTitle";
 
 interface ChatsPanelProps {
 	myUser: string;
-	associates: FriendStatus[];
+	friends: any[];
 }
 
 export function ChatsPanel(props: ChatsPanelProps) {
+	const { myUser, friends } = props;
+
 	const dataStore = DataStore.getInstance();
-
-	const { myUser, associates } = props;
-	const [chatPanelItems, setChatPanelItems] = React.useState<any[]>([]);
-
-	React.useEffect(() => {
-		try {
-			printChats(myUser, associates);
-		} catch (error) {
-			console.error(error);
-		}
-	}, []);
-
-	async function printChats(myUser: string, associates: FriendStatus[]) {
-		const itemsToRender =
-			associates &&
-			associates.map((associate, index) => {
-				return (
-					<ChatsPanelItem
-						key={`ChatsPanelItem_${index}`}
-						name={associate.name}
-						onlineStatus={associate.onlineStatus}
-						lastMessage={associate.lastMessage}
-						onClick={() =>
-							dataStore.setSelectedFriend(associate.name)
-						}
-					/>
-				);
-			});
-
-		setChatPanelItems(itemsToRender);
-	}
 
 	return (
 		<Container fluid className="chatsPanelContainer">
-			<UserTitle username={props.myUser} image="" />
+			<UserTitle username={myUser} image="" />
 
-			<ul>{chatPanelItems}</ul>
+			{friends.map((friend, index) => (
+				<ul>
+					<ChatsPanelItem
+						key={`chat-panel-item-${index}`}
+						name={friend.user2}
+						onClick={() =>
+							dataStore.setSelectedFriend(friend.user2)
+						}
+					/>
+				</ul>
+			))}
 		</Container>
 	);
 }

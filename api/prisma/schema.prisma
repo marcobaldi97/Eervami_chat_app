@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model friends {
+  user1                      String @db.VarChar
+  user2                      String @db.VarChar
+  users_friends_user1Tousers users  @relation("friends_user1Tousers", fields: [user1], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "ForeignKey1")
+  users_friends_user2Tousers users  @relation("friends_user2Tousers", fields: [user2], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "ForeignKey2")
+
+  @@id([user1, user2], map: "Friends_pkey")
+}
+
+model messages {
+  user1     String    @db.VarChar(30)
+  user2     String    @db.VarChar(30)
+  msg_id    BigInt    @default(autoincrement())
+  msg       String?   @db.VarChar
+  date_time DateTime? @db.Date
+  users     users     @relation(fields: [user1], references: [username], onDelete: NoAction, onUpdate: NoAction, map: "Users_relation1")
+
+  @@id([user2, msg_id], map: "Messages_pkey")
+  @@unique([user1, user2, msg_id], map: "Messages_user1_user2_msgId_key")
+}
+
+model users {
+  username                     String     @id(map: "Users_pkey") @db.VarChar(30)
+  password                     String     @db.VarChar(30)
+  email                        String     @db.VarChar(60)
+  friends_friends_user1Tousers friends[]  @relation("friends_user1Tousers")
+  friends_friends_user2Tousers friends[]  @relation("friends_user2Tousers")
+  messages                     messages[]
+}

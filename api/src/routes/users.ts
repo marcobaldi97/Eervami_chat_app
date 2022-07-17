@@ -1,27 +1,34 @@
 import { Router } from "express";
 import { LoginParams } from "../APITypes";
-import { DBManager } from "../core/DBManager";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export const users = Router();
 
-const db = DBManager.getInstance();
+const login = async (params: LoginParams): Promise<boolean> => {
+    const { username, password } = params;
 
-users.post("/login", async (req, res, next) => {
+    const user = await prisma.users.findMany({
+        where: {
+            username,
+            password,
+        },
+    });
+
+    return user.length > 0;
+};
+
+users.post("/login", async (req, res) => {
     const { username, password }: LoginParams = req.body;
     try {
-        //SQL query to check if the user and password given match
-        const query = `SELECT * FROM users WHERE username = $1 AND password = $2`;
-        const result = await db.executeSelectConsult(query, [username, password]);
-
-        if (result.length > 0) {
-            res.send({
+        await login({ username, password })
+            ? res.send({
                 success: true,
-            });
-        } else {
-            res.send({
+            })
+            : res.send({
                 success: false,
             });
-        }
     } catch (error) {
         console.log(error);
 

@@ -1,12 +1,13 @@
 import React from "react";
-import "./Chat.styles.scss";
-
-import { ApiStore, Message } from "../../core/ApiStore";
-
 import { Form, Button } from "react-bootstrap";
+
+import { Message } from "../../types";
+import { ApiStore } from "../../core/ApiStore";
 
 import { ChatMessage } from "../ChatMessage/ChatMessage";
 import { UserTitle } from "../UserTitle/UserTitle";
+
+import "./Chat.styles.scss";
 
 export function Chat(props: { myUser: string; associateName: string }) {
 	const apiStore = new ApiStore();

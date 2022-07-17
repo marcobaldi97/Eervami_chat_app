@@ -8,7 +8,7 @@ import { errorHandler, errorNotFoundHandler } from "./middlewares/errorHandler";
 
 // Routes
 import { index } from "./routes/index";
-import { friends } from "./routes/friends";
+import { friendsRouter } from "./routes/friends";
 import { messages } from "./routes/messages";
 import { users } from "./routes/users";
 // Create Express server
@@ -28,11 +28,16 @@ const loginLimit: any = rateLimit({
     message: "Too many login attempts. Please try again after a fifteen minutes.",
 });
 
+(BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+};
+
+
 app.use("/api/users/login", loginLimit);
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api", index);
-app.use("/api/friends", friends);
+app.use("/api/friends", friendsRouter);
 app.use("/api/messages", messages);
 app.use("/api/users", users);
 
